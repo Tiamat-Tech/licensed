@@ -51,6 +51,12 @@ module Licensed
                    .downcase
                    .split("::")
         end
+
+        # Returns true if the source requires matching reviewed and ignored dependencies'
+        # versions as well as their name
+        def require_matched_dependency_version
+          false
+        end
       end
 
       # all sources have a configuration
@@ -69,7 +75,9 @@ module Licensed
       # Returns all dependencies that should be evaluated.
       # Excludes ignored dependencies.
       def dependencies
-        cached_dependencies.reject { |d| ignored?(d) }
+        cached_dependencies
+          .reject { |d| ignored?(d) }
+          .each { |d| add_additional_terms_from_configuration(d) }
       end
 
       # Enumerate all source dependencies.  Must be implemented by each source class.
@@ -79,7 +87,12 @@ module Licensed
 
       # Returns whether a dependency is ignored in the configuration.
       def ignored?(dependency)
-        config.ignored?("type" => self.class.type, "name" => dependency.name)
+        config.ignored?(dependency.metadata, require_version: self.class.require_matched_dependency_version)
+      end
+
+      # Returns configuration options set for the current source
+      def source_config
+        @source_config ||= config[self.class.type].is_a?(Hash) ? config[self.class.type] : {}
       end
 
       private
@@ -87,6 +100,11 @@ module Licensed
       # Returns a cached list of dependencies
       def cached_dependencies
         @dependencies ||= enumerate_dependencies.compact
+      end
+
+      # Add any additional_terms for this dependency that have been added to the configuration
+      def add_additional_terms_from_configuration(dependency)
+        dependency.additional_terms.concat config.additional_terms_for_dependency("type" => self.class.type, "name" => dependency.name)
       end
     end
   end

@@ -22,7 +22,7 @@ describe Licensed::Commands::Cache do
   each_source do |source_class|
     describe "with #{source_class.full_type}" do
       let(:source_type) { source_class.full_type }
-      let(:config_file) { File.join(fixtures, "command/#{source_type}.yml") }
+      let(:config_file) { File.join(fixtures, "#{source_type}/.licensed.yml") }
       let(:config) { Licensed::Configuration.load_from(config_file) }
 
       it "extracts license info" do
@@ -61,7 +61,7 @@ describe Licensed::Commands::Cache do
     config.apps.each do |app|
       FileUtils.mkdir_p app.cache_path.join("test")
       File.write app.cache_path.join("test/dependency.#{Licensed::DependencyRecord::EXTENSION}"), ""
-      app.ignore "type" => "test", "name" => "dependency"
+      app.ignore({ "type" => "test", "name" => "dependency" })
     end
 
     run_command
@@ -206,7 +206,7 @@ describe Licensed::Commands::Cache do
     config.apps.each do |app|
       FileUtils.mkdir_p app.cache_path.join("test")
       File.write app.cache_path.join("test/dependency.#{Licensed::DependencyRecord::EXTENSION}"), ""
-      app.ignore "type" => "test", "name" => "dependency"
+      app.ignore({ "type" => "test", "name" => "dependency" })
     end
 
     run_command

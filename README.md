@@ -1,8 +1,6 @@
 # Licensed
 
-Licensed caches the licenses of dependencies and checks their status.
-
-Licensed is available as a Ruby gem for Ruby environments, and as a self-contained executable for non-Ruby environments.
+Licensed caches the licenses of dependencies and checks their status, and is available as a Ruby gem.
 
 Licensed is **not** a complete open source license compliance solution. Please understand the important [disclaimer](#disclaimer) below to make appropriate use of Licensed.
 
@@ -11,6 +9,10 @@ Licensed is **not** a complete open source license compliance solution. Please u
 ![Build status](https://github.com/github/licensed/workflows/Test/badge.svg)
 
 Licensed is in active development and currently used at GitHub.  See the [open issues](https://github.com/github/licensed/issues) for a list of potential work.
+
+## Licensed v4 - **Removed support for non-Ruby environments**
+
+Licensed v4 no longer provides a self-contained executable build of licensed.  Please see [the deprecation notice](https://github.com/github/licensed/issues/585) for more context.
 
 ## Licensed v3
 
@@ -45,7 +47,7 @@ sudo apt-get install cmake pkg-config
 brew install cmake pkg-config
 ```
 
-### With a Gemfile
+### With Gemfile
 
 Add this line to your application's Gemfile:
 
@@ -59,18 +61,11 @@ And then execute:
 $> bundle
 ```
 
-### As an executable
-
-Download a package from GitHub and extract the executable.  Executable packages are available for each release starting with version 1.2.0.
+### With Homebrew (on macOS)
 
 ```bash
-$> curl -sSL https://github.com/github/licensed/releases/download/<version>/licensed-<version>-<os>-x64.tar.gz > licensed.tar.gz
-$> tar -xzf licensed.tar.gz
-$> rm -f licensed.tar.gz
-$> ./licensed list
+brew install licensed
 ```
-
-For system wide usage, install licensed to a location on `$PATH`, e.g. `/usr/local/bin`.
 
 ## Usage
 

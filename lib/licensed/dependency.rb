@@ -9,6 +9,7 @@ module Licensed
     attr_reader :version
     attr_reader :errors
     attr_reader :path
+    attr_reader :additional_terms
 
     # Create a new project dependency
     #
@@ -28,6 +29,7 @@ module Licensed
       @errors = errors
       path = path.to_s
       @path = path
+      @additional_terms = []
 
       # enforcing absolute paths makes life much easier when determining
       # an absolute file path in #notices
@@ -80,6 +82,13 @@ module Licensed
       files.compact
     end
 
+
+    # Override the behavior of Licensee::Projects::FSProject#project_files to include
+    # additional license terms
+    def project_files
+      super + additional_license_terms_files
+    end
+
     # Returns legal notices found at the dependency path
     def notice_contents
       Dir.glob(dir_path.join("*"))
@@ -88,6 +97,17 @@ module Licensed
          .sort # sorted by the path
          .map { |path| { "sources" => normalize_source_path(path), "text" => read_file_with_encoding_check(path) } }
          .select { |notice| notice["text"].length > 0 } # files with content only
+    end
+
+    # Returns a hash of basic metadata about the dependency - name, version, type, etc
+    def metadata
+      {
+        # can be overriden by values in @metadata
+        "name" => name,
+        "version" => version
+      }.merge(
+        @metadata
+      )
     end
 
     private
@@ -102,6 +122,7 @@ module Licensed
     def license_content_sources(files)
       paths = Array(files).map do |file|
         next file[:uri] if file[:uri]
+        next file[:source] if file[:source]
 
         path = dir_path.join(file[:dir], file[:name])
         normalize_source_path(path)
@@ -125,14 +146,8 @@ module Licensed
     # Returns the metadata that represents this dependency.  This metadata
     # is written to YAML in the dependencys cached text file
     def license_metadata
-      {
-        # can be overriden by values in @metadata
-        "name" => name,
-        "version" => version
-      }.merge(
-        @metadata
-      ).merge({
-        # overrides all other values
+      metadata.merge({
+        # overrides all metadata values
         "license" => license_key
       })
     end
@@ -156,6 +171,23 @@ module Licensed
         "sources" => "Auto-generated #{license.spdx_id} license text",
         "text" => text
       }
+    end
+
+    # Returns an array of Licensee::ProjectFiles::LicenseFile created from
+    # this dependency's additional license terms
+    def additional_license_terms_files
+      @additional_license_terms_files ||= begin
+        files = additional_terms.map do |path|
+          next unless File.file?(path)
+
+          metadata = { dir: File.dirname(path), name: File.basename(path) }
+          Licensee::ProjectFiles::LicenseFile.new(
+            load_file(metadata),
+            { source: "License terms loaded from #{metadata[:name]}" }
+          )
+        end
+        files.compact
+      end
     end
   end
 end

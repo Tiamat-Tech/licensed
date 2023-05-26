@@ -6,6 +6,98 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 4.4.0
+
+### Added
+
+- Licensed status command will alert on stale cached dependency records (https://github.com/github/licensed/pull/657)
+
+## 4.3.1
+
+### Changed
+
+- Bump nokogiri to resolve vulnerabilities (https://github.com/github/licensed/pull/648)
+
+## 4.3.0
+
+### Added
+
+- Cocoapods support has been re-enabled using a cocoapods plugin (https://github.com/github/licensed/pull/644)
+
+## 4.2.0
+
+### Added
+
+- Reviewed and ignored configuration lists support matching on versions and version ranges (https://github.com/github/licensed/pull/629)
+
+### Fixed
+
+- Licensed should more reliably source dependencies from Gradle >= 8.0 (https://github.com/github/licensed/pull/630)
+
+## 4.1.0
+
+### Added
+
+- Custom license terms can be added to dependencies via new configuration options (https://github.com/github/licensed/pull/624)
+- Licensed is now integrated with pnpm to enumerate dependencies (https://github.com/github/licensed/pull/626)
+
+## 4.0.4
+
+### Changed
+
+- Dependency version requirements are more relaxed (https://github.com/github/licensed/pull/619)
+
+## 4.0.3
+
+### Changed
+
+- Cocoapods dependency enumeration has been disabled (https://github.com/github/licensed/pull/616)
+
+### Fixed
+
+- Fixed method signature change in Bundler API with Bundler >= 2.4.4 (:tada: @CvX https://github.com/github/licensed/pull/614)
+- Fixed installation dependency compatibility with Rails >= 7.0 (https://github.com/github/licensed/pull/616)
+
+## 4.0.2
+
+### Fixed
+
+- The path to a gradlew executable can be configured when enumerating gradle dependencies (:tada: @LouisBoudreau https://github.com/github/licensed/pull/610)
+
+## 4.0.1
+
+### Fixed
+
+- Running gradle tests will no longer fail when gradle is not available (https://github.com/github/licensed/pull/606)
+
+## 4.0.0
+
+### Added
+
+- Licensed supports Cocoapods as a dependency source (:tada: @LouisBoudreau https://github.com/github/licensed/pull/584)
+- Licensed supports Gradle multi-project builds (:tada: @LouisBoudreau https://github.com/github/licensed/pull/583)
+
+### Fixed
+
+- Licensed no longer crashes when run with Bundler >= 2.4.0 (:tada: @JoshReedSchramm https://github.com/github/licensed/pull/597)
+
+### Changed
+
+- BREAKING: Licensed no longer ships executables with releases (https://github.com/github/licensed/pull/586)
+- BREAKING: Licensed no longer includes support for Go <= 1.11 (https://github.com/github/licensed/pull/602)
+
+## 3.9.1
+
+### Fixed
+
+- Updating cached dependency records will more accurately apply `review_changed_license` flag (https://github.com/github/licensed/pull/578)
+
+## 3.9.0
+
+### Added
+
+- `NOTICE` files can now be generated without cached files in a repository (https://github.com/github/licensed/pull/572)
+
 ## 3.8.0
 
 ### Added
@@ -649,4 +741,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Initial release :tada:
 
-[Unreleased]: https://github.com/github/licensed/compare/3.8.0...HEAD
+[Unreleased]: https://github.com/github/licensed/compare/4.4.0...HEAD

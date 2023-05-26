@@ -26,6 +26,15 @@ cache_path: 'relative/path/to/cache'
 # Defaults to current directory when running `licensed`
 source_path: 'relative/path/to/source'
 
+# Whether to take any action when records are detected in the cache paths that don't map to evaluated
+# dependencies.
+# Available values are:
+# - 'error': treat stale cached records as errors.  Notify the user and fail status checks
+# - 'warn', '', unset: treat stale cached records as warnings.  Notify the user but do not fail status checks
+# - 'ignore': Ignore stale cached records.  Do not notify the user and do not fail status checks
+# Optional, when not set this defaults to 'warn' behavior
+stale_records_action: 'warn'
+
 # Sources of metadata
 sources:
   bower: true
@@ -66,6 +75,13 @@ reviewed:
   bower:
   - classlist # public domain
   - octicons
+
+# Specify additional license terms that have been obtained from a dependency's owner
+# which apply to the dependency's license 
+additional_terms:
+  bundler:
+    bcrypt-ruby:
+      - .licenses/amendments/bundler/bcrypt-ruby/amendment.txt
 
 # A single configuration file can be used to enumerate dependencies for multiple
 # projects.  Each configuration is referred to as an "application" and must include
